@@ -1,46 +1,67 @@
 #include<stdlib.h>
 #include<stdio.h>
-char nome[25];
-int temp, opcao, comunicacao;
-float energia;
+typedef struct {
+    char nome[25];
+    int temp;
+    float energia;
+    int comunicacao;
 
+} Missao;
+
+Missao nave;
+
+int historicoTemp[100];
+int historicoEnergia[100];
+int historicoComunicacao[100];
+
+int totalLeituras = 0;
+
+int opcao = 0;
 
 void insere_dados(){
     printf("=======================================");
-    printf("Olá, seja bem-vindo ao centro de monitoramento da nave!");
+    printf("\nOla, seja bem-vindo ao centro de monitoramento da nave!\n");
     printf("=======================================");
     
     printf("\n\nDigite o seu primeiro nome:\n");
-    scanf("%s", nome);
-    printf("\n Olá, %s!, prosseguiremos com o monitoramento da nave.\n", nome);
+    scanf("%s", nave.nome);
+    printf("\nOla, %s!, prosseguiremos com o monitoramento da nave.\n", nave.nome);
     
     printf("\n\nDigite a temperatura atual da nave:\n");
-    scanf("%d", &temp);
+    scanf("%d", &nave.temp);
     
     
-    printf("\n Digite a porcentagem atual de energia da nave:\n");
-    scanf("%f", &energia);
+    printf("\nDigite a porcentagem atual de energia da nave:\n");
+    scanf("%f", &nave.energia);
     
-    printf("\nDigite o Status da comunicação\n");
+    printf("\nDigite o Status da comunicacao\n");
     printf("| 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100 |\n");
-    scanf("%d", &comunicacao);
+    scanf("%d", &nave.comunicacao);
+
+    historicoTemp[totalLeituras] = nave.temp;
+    historicoEnergia[totalLeituras] = nave.energia;
+    historicoComunicacao[totalLeituras] = nave.comunicacao;
+
+    totalLeituras++;
+
+
     
     
 }
 
-void analise() {
-    condicoes();
+void historico() {
+    
     
 }
 
 void status (){
     printf("=======================================");
-    printf("Status da Missão");
+    printf("\nStatus da Missao\n");
     printf("=======================================");
 
-    printf("\n\n Temperatura atual da nave: %d", temp);
-    printf("\n\n A energia está em %.2f%%", energia);
-    printf("\n\n A qualidade da comunicação está em: %d%%", comunicacao);
+    printf("\n\nTemperatura atual da nave: %d", nave.temp);
+    printf("\n\nA energia esta em %.2f%%", nave.energia);
+    printf("\n\nA qualidade da comunicacao esta em: %d%%\n", nave.comunicacao);
 
 }
 
@@ -48,56 +69,56 @@ void condicoes() {
     
     // verificando condições de temperatura
     
-    if (temp > 100){
-        printf("\nA nave estrará em estado crítico! Risco de falha total dos sistemas!\n");
+    if (nave.temp > 100){
+        printf("\nA nave estrara em estado critico! Risco de falha total dos sistemas!\n");
         
-    } else if (temp > 80 && temp <= 100) {
+    } else if (nave.temp > 80 && nave.temp <= 100) {
         printf("\nAlerta de superaquecimento!\n");
 
-    } else if (temp >=60 && temp <= 80) {
-        printf("\nA temperatura da nave está dentro dos limites seguros.\n");
+    } else if (nave.temp >=60 && nave.temp <= 80) {
+        printf("\nA temperatura da nave esta dentro dos limites seguros.\n");
         
-    } else if (temp >= 20 && temp < 60) {
-        printf("\nA temperatura da nave está em níveis recomendados.\n");
+    } else if (nave.temp >= 20 && nave.temp < 60) {
+        printf("\nA temperatura da nave esta em niveis recomendados.\n");
         
-    } else if (temp < 20) {
-        printf("\nA temperatura da nave está muito baixa, risco de dano aos sistemas!\n");
+    } else if (nave.temp < 20) {
+        printf("\nA temperatura da nave esta muito baixa, risco de dano aos sistemas!\n");
         
     } else {
-        printf("\n a temperatura da nave está em um estado desconhecido, verifique os sensores!\n");
+        printf("\n a temperatura da nave esta em um estado desconhecido, verifique os sensores!\n");
     }
 
     // Verificando condições de energia
     
-    if (energia < 20) {
-        printf("\nA nave entrará em modo de economia de energia.\n Recarregue a nave!\n");
+    if (nave.energia < 20) {
+        printf("\nA nave entrara em modo de economia de energia.\n Recarregue a nave!\n");
         
-    } else if (energia >= 20 && energia <= 50) {
-        printf("\nA nave está operando abaixo da capacidade recomendada.\n Recomenda-se o abastecimento de energia");
+    } else if (nave.energia >= 20 && nave.energia <= 50) {
+        printf("\nA nave esta operando abaixo da capacidade recomendada.\n Recomenda-se o abastecimento de energia");
         
-    }else if (energia >50 && energia <=75) {
-        printf("\nA nave está operando com níveis seguros de energia");
+    }else if (nave.energia >50 && nave.energia <=75) {
+        printf("\nA nave esta operando com niveis seguros de energia");
         
     } else {
-        printf("\nA nave está operando com capacidade máxima\n");
+        printf("\nA nave esta operando com capacidade maxima\n");
     }
     
     // verificando condições de comunicação
     
-    if (comunicacao == 0) {
-        printf("Sem condições de comunicação.");
+    if (nave.comunicacao == 0) {
+        printf("Sem condicoes de comunicacao.");
         
-    } else if (comunicacao > 0 && comunicacao <= 25) {
-        printf("\nAs condições de comunicação foram severamente prejudicadas.\n");
+    } else if (nave.comunicacao > 0 && nave.comunicacao <= 25) {
+        printf("\nAs condicoes de comunicacao foram severamente prejudicadas.\n");
         
-    } else if (comunicacao > 25 && comunicacao <= 50) {
-        printf("\nAs condições de comunicação estão prejudicadas, porém, funcionando\n");
+    } else if (nave.comunicacao > 25 && nave.comunicacao <= 50) {
+        printf("\nAs condicoes de comunicacao estão prejudicadas, porem, funcionando\n");
 
-    } else if (comunicacao > 50 && comunicacao <= 75) {
-        printf("\n As condições de comunicação estão em bom estado.\n");
+    } else if (nave.comunicacao > 50 && nave.comunicacao <= 75) {
+        printf("\n As condicoes de comunicacao estao em bom estado.\n");
 
     } else {
-        printf("\nAs condições de comunicação estão em ótimo estado.\n");
+        printf("\nAs condicoes de comunicacao estão em otimo estado.\n");
     }
     
 }
@@ -109,15 +130,15 @@ int main(){
 
     while(opcao != 4){
         
-        printf("=======================================");
-        
-        printf("MENU");
+        printf("\n=======================================");
 
-        printf("=======================================");
+        printf("\nMENU\n");
+
+        printf("=======================================\n");
         
-        printf("1 - Inserir dados\n");
+        printf("\n1 - Inserir dados\n");
         printf("2 - Visualizar status\n");
-        printf("3 - Executar análise\n");
+        printf("3 - Executar analise\n");
         printf("4 - Encerrar sistema\n");
         
         scanf("%d", &opcao);
@@ -131,27 +152,30 @@ int main(){
                 
 
             case 2:
-            if(dados_inseridos == 0){
-                printf("Por favor, insira os dados primeiro.");
-            }
-                status();
-                break;
-                
+                if(dados_inseridos == 0){
+                    printf("Por favor, insira os dados primeiro.");
+                    break;
+                }
+                    status();
+                    break;
+                    
+                    
 
             case 3:
-            if(dados_inseridos == 0){
-                printf("Por favor, insira os dados primeiros.");
-            }
-                analise();
-                break;
-                
+                if(dados_inseridos == 0){
+                    printf("Por favor, insira os dados primeiros.");
+                    break;
+                }
+                    condicoes();
+                     break;
+                    
 
             case 4:
-                printf("Sessão finalizada!");
+                printf("Sessao finalizada!");
                 break;
 
             default:
-                printf("Opção inválida, por favor, escolha uma opção válida.");
+                printf("Opçao invalida, por favor, escolha uma opcao valida.");
 
         }
     }
