@@ -11,7 +11,7 @@ typedef struct {
 Missao nave;
 
 int historicoTemp[100];
-int historicoEnergia[100];
+float historicoEnergia[100];
 int historicoComunicacao[100];
 
 int totalLeituras = 0;
@@ -50,7 +50,27 @@ void insere_dados(){
 }
 
 void historico() {
-    
+    if(totalLeituras == 0){
+        printf("\nInsira mais dados para consultar o histórico");
+        return;
+    }
+
+    printf("\n=======================================\n");
+    printf("Historico de leituras");
+    printf("\n=======================================\n");
+
+    for(int i = 0; i < totalLeituras; i++){
+        printf("\nLeitura %d\n", i + 1);
+
+        printf("\nTemperatura - %d Graus celsius\n", historicoTemp[i]);
+
+        printf("\nEnergia - %.2f%%\n", historicoEnergia[i]);
+
+        printf("\nComunicacao - %d\n",historicoComunicacao[i]);
+
+        printf("\n----------------------------------\n");
+
+    }
     
 }
 
@@ -123,12 +143,54 @@ void condicoes() {
     
 }
 
+void estatistica() {
+    if(insere_dados == 0){
+        printf("Por favor, insira primeiro mais de um dado.");
+        return;
+    }
+
+    int maior_temp = historicoTemp[0];
+    float menor_energia = historicoEnergia[0];
+    float somaTemp = 0;
+    float mediaTemp = 0;
+
+    for(int i = 0; i < totalLeituras; i++){
+        if(historicoTemp[i] > maior_temp){
+            maior_temp = historicoTemp[i];
+        }
+    }
+
+
+    for(int i = 0; i < totalLeituras; i++){
+        if(historicoEnergia[i] < menor_energia){
+            menor_energia = historicoEnergia[i];
+        }
+    }
+
+    for(int i = 0; i < totalLeituras; i++){
+        somaTemp += historicoTemp[i];
+    }
+
+    mediaTemp = somaTemp / totalLeituras;
+
+
+    printf("\nA maior temperatura foi de %d Graus!\n", maior_temp);
+    printf("\nA menor carga de energia foi de %.2f%%!\n", menor_energia);
+    printf("\nA media das temperaturas foi de %.2f Graus!\n", mediaTemp);
+
+
+}
+
+
+void relatorio(){
+    
+}
 
 int main(){
 
     int dados_inseridos = 0;
 
-    while(opcao != 4){
+    while(opcao != 6){
         
         printf("\n=======================================");
 
@@ -139,7 +201,9 @@ int main(){
         printf("\n1 - Inserir dados\n");
         printf("2 - Visualizar status\n");
         printf("3 - Executar analise\n");
-        printf("4 - Encerrar sistema\n");
+        printf("4 - Historico\n");
+        printf("5 - Estatistica\n");
+        printf("6 - Encerrar sistema\n");
         
         scanf("%d", &opcao);
 
@@ -158,8 +222,7 @@ int main(){
                 }
                     status();
                     break;
-                    
-                    
+                      
 
             case 3:
                 if(dados_inseridos == 0){
@@ -168,9 +231,24 @@ int main(){
                 }
                     condicoes();
                      break;
-                    
-
+            
             case 4:
+                if(dados_inseridos ==0){
+                    printf("Por favor, insira mais dados para acessar o historico");
+                    break;
+                }
+                historico();
+                break;
+
+            case 5:
+                if(dados_inseridos == 0){
+                    printf("Por favor, insira primeiro mais de um dado!");
+                    break;
+                }
+                estatistica();
+                break;
+
+            case 6:
                 printf("Sessao finalizada!");
                 break;
 
