@@ -1,5 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
+
 typedef struct {
     char nome[25];
     int temp;
@@ -13,15 +15,16 @@ Missao nave;
 int historicoTemp[100];
 float historicoEnergia[100];
 int historicoComunicacao[100];
+char historicoNome[100][25];
 
 int totalLeituras = 0;
 
 int opcao = 0;
 
 void insere_dados(){
-    printf("=======================================");
+    printf("===============================================================");
     printf("\nOla, seja bem-vindo ao centro de monitoramento da nave!\n");
-    printf("=======================================");
+    printf("===============================================================");
     
     printf("\n\nDigite o seu primeiro nome:\n");
     scanf("%s", nave.nome);
@@ -46,9 +49,9 @@ void insere_dados(){
         printf("\nDigite a porcentagem atual de energia da nave:\n");
         scanf("%f", &nave.energia);
 
-        if(nave.energia < 0 || nave.energia > 0){
+        if(nave.energia < 0 || nave.energia > 100){
 
-            printf("Dado impossivel, insira novamente");
+            printf("Dado impossivel, insira novamente.");
 
         }
 
@@ -61,7 +64,7 @@ void insere_dados(){
 
         if(nave.comunicacao < 0 || nave.comunicacao > 100){
 
-            printf("Dado inválido, por favor, insira novamente.");
+            printf("Dado invalido, por favor, insira novamente.");
 
         }
 
@@ -71,6 +74,7 @@ void insere_dados(){
     historicoTemp[totalLeituras] = nave.temp;
     historicoEnergia[totalLeituras] = nave.energia;
     historicoComunicacao[totalLeituras] = nave.comunicacao;
+    strcpy(historicoNome[totalLeituras], nave.nome);
 
     totalLeituras++;
 
@@ -89,11 +93,14 @@ void historico() {
     for(int i = 0; i < totalLeituras; i++){
         printf("\nLeitura %d\n", i + 1);
 
+        printf("\nTripulante: %s\n", historicoNome[i]);
+
         printf("\nTemperatura - %d Graus celsius\n", historicoTemp[i]);
+
 
         printf("\nEnergia - %.2f%%\n", historicoEnergia[i]);
 
-        printf("\nComunicacao - %d\n",historicoComunicacao[i]);
+        printf("\nComunicacao - %d%%\n",historicoComunicacao[i]);
 
         printf("\n----------------------------------\n");
 
@@ -103,10 +110,12 @@ void historico() {
 
 void status (){
     printf("=======================================");
-    printf("\nStatus da Missao\n");
+    printf("\nStatus da Ultima Leitura da Missao\n");
     printf("=======================================");
 
-    printf("\n\nTemperatura atual da nave: %d", nave.temp);
+    printf("\nTripulante: %s.\n", nave.nome);
+
+    printf("\nTemperatura atual da nave: %d", nave.temp);
 
     printf("\n\nA energia esta em %.2f%%", nave.energia);
 
@@ -140,7 +149,7 @@ void condicoes() {
         printf("\nA temperatura da nave esta muito baixa, risco de dano aos sistemas!\n");
         
     } else {
-        printf("\n a temperatura da nave esta em um estado desconhecido, verifique os sensores!\n");
+        printf("\nA temperatura da nave esta em um estado desconhecido, verifique os sensores!\n");
     }
 
     // Verificando condições de energia
@@ -161,16 +170,16 @@ void condicoes() {
     // verificando condições de comunicação
     
     if (nave.comunicacao == 0) {
-        printf("Sem condicoes de comunicacao.");
+        printf("\nSem condicoes de comunicacao.\n");
         
     } else if (nave.comunicacao > 0 && nave.comunicacao <= 25) {
         printf("\nAs condicoes de comunicacao foram severamente prejudicadas.\n");
         
     } else if (nave.comunicacao > 25 && nave.comunicacao <= 50) {
-        printf("\nAs condicoes de comunicacao estão prejudicadas, porem, funcionando\n");
+        printf("\nAs condicoes de comunicacao estao prejudicadas, porem, funcionando\n");
 
     } else if (nave.comunicacao > 50 && nave.comunicacao <= 75) {
-        printf("\n As condicoes de comunicacao estao em bom estado.\n");
+        printf("\nAs condicoes de comunicacao estao em bom estado.\n");
 
     } else {
         printf("\nAs condicoes de comunicacao estão em otimo estado.\n");
@@ -253,10 +262,9 @@ void estatistica() {
 
     printf("=======================================\n"); 
 
-
    printf("\n\nA maior temperatura foi de %d Graus.\n", maior_temp);
    
-   printf("\nA menor temperatura foi de %d Graus!\n", menor_temp);
+   printf("\nA menor temperatura foi de %d Graus.\n", menor_temp);
    
    printf("\nA media das temperaturas foi de %.2f Graus.\n", mediaTemp);
 
@@ -273,13 +281,13 @@ void estatistica() {
 void relatorio(){
 
     
-    printf("\nOla, %s, aqui esta o relatorio da missao:\n", nave.nome);
+    printf("\nOla, aqui esta o relatorio da missao:\n");
 
     condicoes();
 
     estatistica();
 
-    printf("\n\n%s, Este foi o relatorio da missao espacial, obrigado!", nave.nome);
+    printf("\n\nEste foi o relatorio da missao espacial, obrigado!");
     
 }
 
@@ -287,7 +295,7 @@ int main(){
 
     int dados_inseridos = 0;
 
-    while(opcao != 6){
+    while(opcao != 5){
         
         printf("\n=======================================");
 
@@ -296,11 +304,10 @@ int main(){
         printf("=======================================\n");
         
         printf("\n1 - Inserir dados\n");
-        printf("2 - Visualizar status\n");
+        printf("2 - Visualizar status da ultima leitura\n");
         printf("3 - Executar analise\n");
         printf("4 - Historico\n");
-        printf("5 - Estatistica\n");
-        printf("6 - Encerrar sistema\n");
+        printf("5 - Encerrar sistema\n");
         
         scanf("%d", &opcao);
 
@@ -338,14 +345,6 @@ int main(){
                 break;
 
             case 5:
-                if(dados_inseridos == 0){
-                    printf("Por favor, insira primeiro mais de um dado!");
-                    break;
-                }
-                estatistica();
-                break;
-
-            case 6:
                 printf("Sessao finalizada!");
                 break;
 
