@@ -27,16 +27,46 @@ void insere_dados(){
     scanf("%s", nave.nome);
     printf("\nOla, %s!, prosseguiremos com o monitoramento da nave.\n", nave.nome);
     
-    printf("\n\nDigite a temperatura atual da nave:\n");
-    scanf("%d", &nave.temp);
-    
-    
-    printf("\nDigite a porcentagem atual de energia da nave:\n");
-    scanf("%f", &nave.energia);
-    
-    printf("\nDigite o Status da comunicacao\n");
-    printf("| 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100 |\n");
-    scanf("%d", &nave.comunicacao);
+
+
+    do{
+        printf("\n\nDigite a temperatura atual da nave:\n");
+        scanf("%d", &nave.temp);
+
+        if(nave.temp < 0 || nave.temp > 100){
+
+            printf("Dado irreal, por favor, verifique novamente ou os sensores.");
+
+        }
+
+    } while (nave.temp < 0 || nave.temp > 100);
+
+
+    do{
+        printf("\nDigite a porcentagem atual de energia da nave:\n");
+        scanf("%f", &nave.energia);
+
+        if(nave.energia < 0 || nave.energia > 0){
+
+            printf("Dado impossivel, insira novamente");
+
+        }
+
+    } while(nave.energia < 0 || nave.energia > 100);
+
+    do {
+        printf("\nDigite o Status da comunicacao\n");
+        printf("| 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100 |\n");
+        scanf("%d", &nave.comunicacao);
+
+        if(nave.comunicacao < 0 || nave.comunicacao > 100){
+
+            printf("Dado inválido, por favor, insira novamente.");
+
+        }
+
+    } while(nave.comunicacao < 0 || nave.comunicacao > 100);
+
 
     historicoTemp[totalLeituras] = nave.temp;
     historicoEnergia[totalLeituras] = nave.energia;
@@ -44,9 +74,6 @@ void insere_dados(){
 
     totalLeituras++;
 
-
-    
-    
 }
 
 void historico() {
@@ -80,12 +107,20 @@ void status (){
     printf("=======================================");
 
     printf("\n\nTemperatura atual da nave: %d", nave.temp);
+
     printf("\n\nA energia esta em %.2f%%", nave.energia);
+
     printf("\n\nA qualidade da comunicacao esta em: %d%%\n", nave.comunicacao);
 
 }
 
 void condicoes() {
+
+    printf("\n=======================================");
+
+    printf("\nRelatorio da Missao Espacial.\n");
+
+    printf("=======================================\n"); 
     
     // verificando condições de temperatura
     
@@ -144,15 +179,21 @@ void condicoes() {
 }
 
 void estatistica() {
-    if(insere_dados == 0){
+    if(totalLeituras == 0){
         printf("Por favor, insira primeiro mais de um dado.");
         return;
     }
 
     int maior_temp = historicoTemp[0];
     float menor_energia = historicoEnergia[0];
+    int menor_temp = historicoTemp[0];
+    float maior_energia = historicoEnergia[0];
     float somaTemp = 0;
     float mediaTemp = 0;
+    float somaEnergia = 0;
+    float mediaEnergia = 0;
+    
+    // Define a maior temperatura
 
     for(int i = 0; i < totalLeituras; i++){
         if(historicoTemp[i] > maior_temp){
@@ -160,6 +201,15 @@ void estatistica() {
         }
     }
 
+    // Define a menor temperatura
+
+    for(int i = 0 ; i < totalLeituras; i++){
+        if(historicoTemp[i] < menor_temp){
+            menor_temp = historicoTemp[i];
+        }
+    }
+
+    //Define a menor energia
 
     for(int i = 0; i < totalLeituras; i++){
         if(historicoEnergia[i] < menor_energia){
@@ -167,22 +217,69 @@ void estatistica() {
         }
     }
 
+    // Define a maior energia
+
+    for(int i = 0; i < totalLeituras; i++){
+        if(historicoEnergia[i] > maior_energia){
+            maior_energia = historicoEnergia[i];
+        }
+    }
+
+    // Soma as energias
+
+    for(int i = 0; i < totalLeituras; i++){
+        somaEnergia += historicoEnergia[i];
+    }
+
+    // Faz a média das energias
+
+    mediaEnergia = somaEnergia / totalLeituras;
+
+    // Soma as temperaturas
+
     for(int i = 0; i < totalLeituras; i++){
         somaTemp += historicoTemp[i];
     }
 
+    // faz a média das temperaturas
+
     mediaTemp = somaTemp / totalLeituras;
+    
+    // Imprime registros na tela
+
+    printf("\n=======================================");
+
+    printf("\nEstatistica da Missao Espacial\n");
+
+    printf("=======================================\n"); 
 
 
-    printf("\nA maior temperatura foi de %d Graus!\n", maior_temp);
-    printf("\nA menor carga de energia foi de %.2f%%!\n", menor_energia);
-    printf("\nA media das temperaturas foi de %.2f Graus!\n", mediaTemp);
+   printf("\n\nA maior temperatura foi de %d Graus.\n", maior_temp);
+   
+   printf("\nA menor temperatura foi de %d Graus!\n", menor_temp);
+   
+   printf("\nA media das temperaturas foi de %.2f Graus.\n", mediaTemp);
+
+   printf("\nA maior carga de energia foi de %.2f%%.\n", maior_energia);
+   
+   printf("\nA menor carga de energia foi de %.2f%%.\n", menor_energia);
+   
+   printf("\nA media das energias foi de %.2f%%.\n", mediaEnergia);
 
 
 }
 
 
 void relatorio(){
+
+    
+    printf("\nOla, %s, aqui esta o relatorio da missao:\n", nave.nome);
+
+    condicoes();
+
+    estatistica();
+
+    printf("\n\n%s, Este foi o relatorio da missao espacial, obrigado!", nave.nome);
     
 }
 
@@ -229,11 +326,11 @@ int main(){
                     printf("Por favor, insira os dados primeiros.");
                     break;
                 }
-                    condicoes();
+                    relatorio();
                      break;
             
             case 4:
-                if(dados_inseridos ==0){
+                if(dados_inseridos == 0){
                     printf("Por favor, insira mais dados para acessar o historico");
                     break;
                 }
